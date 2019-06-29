@@ -1,0 +1,46 @@
+{
+    "tracking_results": [
+      {
+        "tracking_id": "6XXX12345678",
+        "consignment": {
+          "events": [
+            {
+              "location": "MEL",
+              "description": "Item Delivered",
+              "date": "2017-09-18T14:35:07+10:00"
+            },
+            {
+              "location": "MEL",
+              "description": "On Board for Delivery",
+              "date": "2017-09-18T09:50:05+10:00"
+            }
+          ],
+          "status": "Delivered in Full"
+        },
+        "trackable_items": [
+          {
+            "article_id": "6XXX12345678EXP00001",
+            "product_type": "EXP",
+            "events": [
+              {
+                "location": "MEL",
+                "description": "On Board for Delivery",
+                "date": "2017-09-18T09:16:01+10:00"
+              },
+              {
+                "location": "TRA",
+                "description": "Freight Handling",
+                "date": "2017-09-15T16:33:29+10:00"
+              },
+              {
+                "location": "TRA",
+                "description": "Picked Up",
+                "date": "2017-09-15T09:04:05+10:00"
+              }
+            ],
+            "status": "Item Delivered"
+          }
+        ]
+      }
+    ]
+  }

@@ -1,0 +1,9 @@
+{
+    "errors": [
+      {
+        "code": "51101",
+        "name": "TOO_MANY_AP_TRACKING_IDS",
+        "message": "The request must contain 10 or less AP article ids, consignment ids, or barcode ids."
+      }
+    ]
+  }

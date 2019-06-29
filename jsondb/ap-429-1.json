@@ -1,0 +1,9 @@
+{
+    "errors": [
+      {
+        "message": "Too many requests",
+        "error_code": "API_002",
+        "error_name": "Too many requests"
+      }
+    ]
+  }
