@@ -4,22 +4,49 @@
 
 _aptrack TRACKINGNUMBERHERE_
 
-The purpose of this application is for a user to be able to receive information regarding the status of a delivery from Australia Post, from the terminal, instead of having to utilise the Australia Post website to retrieve such information. It will retrieve the information via an HTTP GET request, utilising the Australia Post track/trace API, which will return information in JSON format, which will then be parsed and output to the user in a human readable form. This information will also be stored in a history file.
+The purpose of this application is for a user to be able to receive information regarding the status of a delivery from Australia Post, from the terminal, instead of having to utilise the Australia Post website to retrieve such information. Using the Python requests library, It will retrieve the information via an HTTP GET request, utilising the Australia Post track/trace API, which will return information in JSON format, which will then be parsed and output to the user in a human readable form. This information will also be stored in a history file.
 
 Being someone that finds themselves refreshing the Australia Post website constantly while waiting for a delivery, I feel that for a developer working in terminal frequently, it would be quite handy to have the ability to quickly get a status update from the command line instead of utilising the web page to retrieve this information.
 
 The target audience for this application would be anyone awaiting a delivery from Australia Post that would like to receive information on the delivery status via the terminal, developers, or anyone using terminal frequently on a daily basis that receive postal deliveries. Perhaps employees in the mail department of a business or corporation that receive a lot of packages and utilise a terminal based workflow.
 
-The application will be used as a command in terminal, with the package tracking number appended to the application command as an argument. This will then be checked for validity using the Australia Post API, if invalid, the user will be asked to input a valid tracking number, or have a choice to exit the application. If no argument is passed to the command line, the user will be asked to enter a number or have a choice to exit the application.
+The application will be used as a command in terminal, with the option of the package tracking number being passed to the application command as an argument. Using argparse library, the application will determine if the user has or has not passed the tracking number using an optional argument flag. This will then be checked for validity using the Australia Post API, if the user has passed a tracking number to the application, and the number is valid, the most recent tracking update will be delivered to the command line and the program will exit. If invalid, the user will be given a relevant error code and the application will also exit. If the user has not passed a tracking number as an argument, they will have a menu with options to input a valid tracking number, after which they can view tracking information, history, or have a choice to exit the application.
 
 ## Development Plan
 
 ### Features
 
+#### Two use case scenarios, user passes tracking number with argument, or enters no tracking number on program run
+
+- Tracking number passed as argument - Display most recent tracking event for valid number at command line and break, on error, display relevant error message at command line and break
+- Tracking number not passed as argument - Display menu with active tracking number at the top and options
+
+#### _Display menu_
+
+- Inform user of option for future use to pass tracking number as argument to receive most recent tracking update at command line
+
+- Show menu with following options
+  - _Enter new tracking number_
+    - Allow user to enter a new tracking number which will be stored in a variable as active tracking number
+  - _Show tracking information_
+    - Check entered number for validity using Australia Post API
+    - Valid result will return tracking information for active tracking number
+    - Invalid result will ask user to enter a valid tracking number
+  - _History_
+    - Store results from tracking number to a file in order to display tracking history for the active tracking number
+  - _Exit_
+    - Exit program
+
+#### _Enter new tracking number_ 
+
+- Request tracking number from user
+  - Store in variable as active tracking number
+- Display tracking number at top of menu
+
 #### _Retrieve tracking information_
 
-- User passes tracking number as argument to program
-  - Tracking number stored as **_variable_**
+- If user passes tracking number as argument to program:
+  - Tracking number stored as variable
   
   - Variable checked against Australia Post database using API HTTP GET request, following possible responses:
   
@@ -34,31 +61,17 @@ The application will be used as a command in terminal, with the package tracking
     |502|Bad gateway|The server you contacted was acting as a gateway or proxy and received an invalid response from an upstream server.|
     |503|Service unavailable|The server is unavailable due to maintenance, overload or an error state of some kind.|
     
-  - Use try/except to make sure input consists of valid characters
-  
   - Use loop to check if variable is returned as invalid, in order to ask user to enter a valid number or exit program
   
-    - test against other fail conditions, break if response other than 200/400 received
+    - test against fail conditions, display relevant error message and break if response other than 200 received
     
-    - limit on Australia Post API of 10 requests per minute, possibly implement this limit in program
-    
-      - HTTP header responses could be used for this purpose as follows:
-    
-        - X-RateLimit-Limit-hour: The maximum number of requests that the consumer is permitted to make per hour.
-    
-        - X-RateLimit-Remaining-hour: The number of requests remaining in the current rate limit window.
-    
-        - X-RateLimit-Limit-day: The maximum number of requests that the consumer is permitted to make per day.
-    
-        - X-RateLimit-Remaining-day: The number of requests remaining in the current rate limit window.
-    
-        - X-RateLimit-Limit-minute: The maximum number of requests that the consumer is permitted to make per minute.
-    
-        - X-RateLimit-Remaining-minute: The number of requests remaining in the current rate limit window.
-    
-        - X-RateLimit-Limit-second: The maximum number of concurrent requests that the consumer is permitted to make per second.
-    
-        - X-RateLimit-Remaining-second: The number of requests remaining in the current rate limit window.
+  - If valid, return most recent tracking update and quit program
+
+
+
+- If user did not pass tracking number as argument to program:
+  - Inform user of option for future use to pass tracking number as argument to receive most recent tracking update at command line
+  - Display menu giving user option to enter tracking number, which will be displayed at the top as active tracking number
 
 #### _Display results_
 
@@ -141,11 +154,15 @@ The application will be used as a command in terminal, with the package tracking
   HTTP Response Code: 200
 
 
-  - Import JSON library
 - Information needs to be presented to user on successful retrieval
+  
+  
+  
+- If user has passed tracking number as argument:
   
   - Dump relevant JSON data into variables in human readable form
     - Print variables to screen in terminal
+    - quit program
   - Possibly implement args in program to filter data from JSON to user preference, e.g. default is most recent status only, args could be set to show all tracking events from beginning 
 
 #### _Store information in file_
