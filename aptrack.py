@@ -30,7 +30,6 @@ def in_track():
 #function to display tracking information
 def show_tracking(track_num):
     ''' show tracking number '''
-    #global track_num
 
     #Actual API would use https://digitalapi.auspost.com.au/shipping/v1/track?tracking_ids=
 
@@ -38,31 +37,27 @@ def show_tracking(track_num):
 
     #follwing code commented out as mock server does not use,
     #actual API would require headers to be sent as follows:
-    #headers = ({'Content-Type: application/json',
-    #            'Accept: application/json',
-    #            'Account-Number: 0000123456',
-    #            'Authorization: Basic NjAxYTQwMzItNmRiZC00NmFhLTljNmMtOGM2ZGFjY2E1ZTYxOnBhc3N3b3JkCg==}'})
+    #headers = {'Content-Type: application/json', 'Accept: application/json', 'Account-Number: 0000123456', 'Authorization: Basic YWJjZDEyMzQtZmRlNy00ODczLWE1NDYtNzY1ZmEyZmU3NDE2OnBhc3N3b3Jk'}
+    if track_num is not None:
+        query = requests.get(url + track_num) #actual API would require requests.get(url + track_num, headers)
 
-    query = requests.get(url + track_num) #actual API would require requests.get(url + track_num, headers)
+        if query.status_code == 200:
+            track_response = query
 
-    if query.status_code == 200:
-        track_response = query
-        if track_num in track_response.text:
-            track_response = query.json()
-            print(f'\n{track_response}')
-            return track_response
+            if track_num in track_response.text:
+                track_response = query.json()
+                print(f'\n{track_response}')
+                error_response = None
+                return error_response
 
-        print(f'\nTracking number not found!')
-        return track_num
+        elif query.status_code == 400:
+            error_response = 'Bad request!'
+            return error_response
 
-    track_response = 'Error!'
-    print(f'\n{track_response}')
-    return track_response
-
-def main():
+def show_menu():
     ''' show menu '''
     parser = argparse.ArgumentParser()
-    parser.add_argument('-t', '--tracknum', help='run: "aptrack TRACKINGNUMBERHERE to insert tracking number"')
+    parser.add_argument('-t', '--tracknum', help='run: "aptrack TRACKINGNUMBERHERE to receive most recent tracking info at command line"')
     #parser.add_argument('-h', '--history', help='enable history stored as TRACKINGNUMBER.txt', action='store_true')
     args = parser.parse_args()
 
@@ -72,34 +67,43 @@ def main():
         quit()
 
     print(f'\nIn future, you can also run: aptrack TRACKINGNUMBERHERE to receive most recent tracking status at command line')
+
     track_num = None
+    error_response = None
+
     while True:
         print(f"""
-    Active tracking number:
-
-    {track_num}
+    Active tracking number: {track_num}
+    Current errors:  {error_response}
 
         1. Enter new tracking number
-        2. Show tracking information
-        3. Show History
+        2. Show current tracking information
+        3. Show tracking history
         4. Exit
         """)
         menu_choice = input("What would you like to do? (choose 1-4) ")
+
         if menu_choice == "1":
             track_num = in_track()
+            error_response = None
+
         elif menu_choice == "2":
             if track_num != '' and track_num is not None:
-                show_tracking(track_num)
+                error_response = show_tracking(track_num)
+
             else:
                 print(f'\nNo tracking number present!')
                 track_num = in_track()
+                error_response = show_tracking(track_num)
+
         elif menu_choice == "3":
-            track_num = 'History'
             print("\nHistory")
+
         elif menu_choice == "4":
             print("\nGoodbye")
             break
-        else:
-            print("\nInvalid choice, please try again")
 
-main()
+        else:
+            print("\nInvalid choice, please try again!")
+
+show_menu()
