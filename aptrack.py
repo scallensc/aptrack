@@ -8,6 +8,7 @@ Version: 0.1
 """
 import argparse
 import requests
+import pprint
 #import json commented out as requests library contains json parser
 
 #def write_to_file(placeholder, track_num):
@@ -22,49 +23,64 @@ def in_track():
     track_num = input(f'\nPlease enter your tracking number: ')
     track_num = track_num.upper()
     if track_num != '' and track_num is not None:
-        return track_num
+        error_response = None
+        return track_num, error_response
 
     print(f'\nNo tracking number entered!')
     track_num = in_track()
-    return track_num
+    #return track_num
 
 #function to display tracking information
 def show_tracking(track_num):
-    ''' show tracking number '''
+    ''' show most recent tracking status '''
 
     #Actual Australia Post API would use the following as url
     #url = 'https://digitalapi.auspost.com.au/test/shipping/v1/track?tracking_ids=' for testing
     #url = 'https://digitalapi.auspost.com.au/shipping/v1/track?tracking_ids=' for production
 
-    url = 'https://8b7a028c-6934-451c-9619-f683a4367494.mock.pstmn.io/shipping/v1/track?tracking_ids='
+    #This is a mock server using Postman API testbed, commented out and replaced with a local
+    #json-server during testing as there is a limit on how many requests a free account can send
+
+    #url = 'https://8b7a028c-6934-451c-9619-f683a4367494.mock.pstmn.io/shipping/v1/track?tracking_ids='
+
+    url = 'http://localhost:3000/test'
 
     #actual Australia Post API would require headers to be sent as follows:
-    headers = {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        'Account-Number': '00001234567',
-        'Authorization': 'Basic YWJjZDEyMzQtZmRlNy00ODczLWE1NDYtNzY1ZmEyZmU3NDE2OlBhc3N3b3Jk'
-    }
+    #headers = {
+    #    'Content-Type': 'application/json',
+    #    'Accept': 'application/json',
+    #    'Account-Number': '00001234567',
+    #    'Authorization': 'Basic YWJjZDEyMzQtZmRlNy00ODczLWE1NDYtNzY1ZmEyZmU3NDE2OlBhc3N3b3Jk'
+    #}
 
     if track_num is not None:
-        query = requests.get(url + track_num)#, headers) #actual API would require requests.get(url + track_num, headers)
+        #actual API would require requests.get(url + track_num, headers)
+        query = requests.get(url)# + track_num)
 
+        #this loop determines if the get request returned a 200 OK code
         if query.status_code == 200:
             track_response = query
 
             if track_num in track_response.text:
                 track_response = query.json()
-                #print(f'\n{track_response}')
-                for result in track_response['tracking_results']:
-                    print(f'\n' + result['status'])
-                #for tracking_id in track_response.items():
-                #    print(track_response[status])
-                error_response = None
-                return error_response
 
-        else:
-            error_response = query
-            return error_response
+                for result in track_response['tracking_results']:
+                    print(f'\n' + result['consignment']['status'])
+                    error_response = None
+                    return error_response, track_response
+
+        #provide an error response code to show on menu if anything other than 200 OK returned
+        error_response = query
+        track_response = None
+        return error_response, track_response
+
+def show_history(track_response):
+    ''' show tracking history for active tracking number'''
+    #type(track_response)
+    #print('\n')
+    pp = pprint.PrettyPrinter(width = 100, indent = 2)
+    pp.pprint(track_response['tracking_results'][0]['trackable_items'])
+
 
 def show_menu():
     ''' show menu '''
@@ -82,6 +98,7 @@ def show_menu():
 
     track_num = None
     error_response = None
+    track_response = None
 
     while True:
         print(f"""
@@ -89,27 +106,29 @@ def show_menu():
     Current errors:  {error_response}
 
         1. Enter new tracking number
-        2. Show current tracking information
+        2. Show current status
         3. Show tracking history
         4. Exit
         """)
         menu_choice = input("What would you like to do? (choose 1-4) ")
 
         if menu_choice == "1":
-            track_num = in_track()
-            error_response = None
+            track_num, error_response = in_track()
 
         elif menu_choice == "2":
             if track_num != '' and track_num is not None:
-                error_response = show_tracking(track_num)
-
+                error_response, track_response = show_tracking(track_num)
             else:
                 print(f'\nNo tracking number present!')
                 track_num = in_track()
-                error_response = show_tracking(track_num)
+                error_response, track_response = show_tracking(track_num)
 
         elif menu_choice == "3":
-            print("\nHistory")
+            if track_num == '' or track_num is None:
+                print(f'\nNo tracking number present!')
+                track_num, error_response = in_track()
+            elif track_response is not None:
+                show_history(track_response)
 
         elif menu_choice == "4":
             print("\nGoodbye")
