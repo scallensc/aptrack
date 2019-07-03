@@ -7,9 +7,8 @@ Licence: GPLv3
 Version: 0.1
 """
 import argparse
-import requests
 import pprint
-#import json commented out as requests library contains json parser
+import requests
 
 #def write_to_file(placeholder, track_num):
 #    with open(filename, "w+") as file:
@@ -78,14 +77,15 @@ def show_history(track_response):
     ''' show tracking history for active tracking number'''
     #type(track_response)
     #print('\n')
-    pp = pprint.PrettyPrinter(width = 100, indent = 2)
-    pp.pprint(track_response['tracking_results'][0]['trackable_items'])
+    p_print = pprint.PrettyPrinter(width=100, indent=2)
+    p_print.pprint(track_response['tracking_results'][0]['trackable_items'])
 
 
 def show_menu():
     ''' show menu '''
     parser = argparse.ArgumentParser()
-    parser.add_argument('-t', '--tracknum', help='run: "aptrack TRACKINGNUMBERHERE to receive most recent tracking info at command line"')
+    parser.add_argument(
+        '-t', '--tracknum', help='run: "aptrack TRACKINGNUMBERHERE to receive most recent tracking info at command line"')
     #parser.add_argument('-h', '--history', help='enable history stored as TRACKINGNUMBER.txt', action='store_true')
     args = parser.parse_args()
 
