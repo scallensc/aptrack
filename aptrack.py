@@ -10,10 +10,6 @@ import argparse
 import pprint
 import requests
 
-#def write_to_file(placeholder, track_num):
-#    with open(filename, "w+") as file:
-#        file.write(placeholder)
-
 #function for user to input a new tracking number
 #saves time having to relaunch program passing argument
 #if left out
@@ -86,7 +82,6 @@ def show_menu():
     parser = argparse.ArgumentParser()
     parser.add_argument(
         '-t', '--tracknum', help='run: "aptrack TRACKINGNUMBERHERE to receive most recent tracking info at command line"')
-    #parser.add_argument('-h', '--history', help='enable history stored as TRACKINGNUMBER.txt', action='store_true')
     args = parser.parse_args()
 
     if args.tracknum is not None:
