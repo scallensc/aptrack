@@ -11,8 +11,7 @@ import pprint
 import requests
 
 #function for user to input a new tracking number
-#saves time having to relaunch program passing argument
-#if left out
+#saves time having to relaunch program passing argument if left out
 def in_track():
     ''' input tracking number '''
     track_num = input(f'\nPlease enter your tracking number: ')
@@ -21,6 +20,7 @@ def in_track():
         error_response = None
         return track_num, error_response
 
+    #request user input again if no tracking info entered
     print(f'\nNo tracking number entered!')
     track_num = in_track()
     return track_num
@@ -108,9 +108,11 @@ def show_menu():
         """)
         menu_choice = input("What would you like to do? (choose 1-4) ")
 
+        #call function to input tracking number
         if menu_choice == "1":
             track_num, error_response = in_track()
 
+        #call function to show most recent tracking event
         elif menu_choice == "2":
             if track_num != '' and track_num is not None:
                 error_response, track_response = show_tracking(track_num)
@@ -119,6 +121,7 @@ def show_menu():
                 track_num, error_response = in_track()
                 error_response, track_response = show_tracking(track_num)
 
+        #call function to display detailed tracking history
         elif menu_choice == "3":
             if track_num == '' or track_num is None:
                 print(f'\nNo tracking number present!')
