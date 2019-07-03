@@ -23,7 +23,7 @@ def in_track():
 
     print(f'\nNo tracking number entered!')
     track_num = in_track()
-    #return track_num
+    return track_num
 
 #function to display tracking information
 def show_tracking(track_num):
@@ -70,6 +70,7 @@ def show_tracking(track_num):
         error_response = query
         track_response = None
         return error_response, track_response
+    return error_response, track_response
 
 def show_history(track_response):
     ''' show tracking history for active tracking number'''
