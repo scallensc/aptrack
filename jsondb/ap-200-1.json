@@ -1,14 +1,5 @@
- {
+{
   "tracking_results": [
-    {
-      "tracking_id": "7XX1000",
-      "errors": [
-        {
-          "code": "ESB-10001",
-          "name": "Invalid tracking ID"
-        }
-      ]
-    },
     {
       "tracking_id": "7XX1000634011427",
       "status": "Delivered",

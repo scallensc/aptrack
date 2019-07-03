@@ -8,6 +8,7 @@ Version: 0.1
 """
 import argparse
 import requests
+#import json commented out as requests library contains json parser
 
 #def write_to_file(placeholder, track_num):
 #    with open(filename, "w+") as file:
@@ -31,27 +32,38 @@ def in_track():
 def show_tracking(track_num):
     ''' show tracking number '''
 
-    #Actual API would use https://digitalapi.auspost.com.au/shipping/v1/track?tracking_ids=
+    #Actual Australia Post API would use the following as url
+    #url = 'https://digitalapi.auspost.com.au/test/shipping/v1/track?tracking_ids=' for testing
+    #url = 'https://digitalapi.auspost.com.au/shipping/v1/track?tracking_ids=' for production
 
-    url = 'https://17f59561-efde-4215-b082-f40188ed2ad5.mock.pstmn.io/shipping/v1/track?tracking_ids='
+    url = 'https://8b7a028c-6934-451c-9619-f683a4367494.mock.pstmn.io/shipping/v1/track?tracking_ids='
 
-    #follwing code commented out as mock server does not use,
-    #actual API would require headers to be sent as follows:
-    #headers = {'Content-Type: application/json', 'Accept: application/json', 'Account-Number: 0000123456', 'Authorization: Basic YWJjZDEyMzQtZmRlNy00ODczLWE1NDYtNzY1ZmEyZmU3NDE2OnBhc3N3b3Jk'}
+    #actual Australia Post API would require headers to be sent as follows:
+    headers = {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Account-Number': '00001234567',
+        'Authorization': 'Basic YWJjZDEyMzQtZmRlNy00ODczLWE1NDYtNzY1ZmEyZmU3NDE2OlBhc3N3b3Jk'
+    }
+
     if track_num is not None:
-        query = requests.get(url + track_num) #actual API would require requests.get(url + track_num, headers)
+        query = requests.get(url + track_num)#, headers) #actual API would require requests.get(url + track_num, headers)
 
         if query.status_code == 200:
             track_response = query
 
             if track_num in track_response.text:
                 track_response = query.json()
-                print(f'\n{track_response}')
+                #print(f'\n{track_response}')
+                for result in track_response['tracking_results']:
+                    print(f'\n' + result['status'])
+                #for tracking_id in track_response.items():
+                #    print(track_response[status])
                 error_response = None
                 return error_response
 
-        elif query.status_code == 400:
-            error_response = 'Bad request!'
+        else:
+            error_response = query
             return error_response
 
 def show_menu():
@@ -66,7 +78,7 @@ def show_menu():
         show_tracking(track_num)
         quit()
 
-    print(f'\nIn future, you can also run: aptrack TRACKINGNUMBERHERE to receive most recent tracking status at command line')
+    print(f'\nIn future, you can also run: aptrack -t TRACKINGNUMBERHERE to receive most recent tracking status at command line')
 
     track_num = None
     error_response = None
