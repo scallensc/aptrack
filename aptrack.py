@@ -4,7 +4,7 @@ Author: Samuel C Allen
 Contact: samuelcallen@me.com
 Date: 2019/06/29
 Licence: GPLv3
-Version: 0.1
+Version: 0.2
 """
 import argparse
 import pprint
@@ -39,7 +39,6 @@ def show_tracking(track_num):
 
     #This is a mock server using Postman API testbed, commented out and replaced with a local
     #json-server during testing as there is a limit on how many requests a free account can send
-
     #url = 'https://8b7a028c-6934-451c-9619-f683a4367494.mock.pstmn.io/shipping/v1/track?tracking_ids='
 
     url = 'http://localhost:3000/test'
@@ -54,15 +53,18 @@ def show_tracking(track_num):
 
     if track_num is not None:
         #actual API would require requests.get(url + track_num, headers)
-        query = requests.get(url)# + track_num)
+        query = requests.get(url)
 
         #this loop determines if the get request returned a 200 OK code
         if query.status_code == 200:
             track_response = query
 
+            #this loop determines if the tracking number is found in the get request return
+            #and then parses json into track_response
             if track_num in track_response.text:
                 track_response = query.json()
 
+                #this loop will print the most current tracking event from returned request
                 for result in track_response['tracking_results']:
                     print(f'\n' + result['consignment']['status'])
                     error_response = None
@@ -75,8 +77,6 @@ def show_tracking(track_num):
 
 def show_history(track_response):
     ''' show tracking history for active tracking number'''
-    #type(track_response)
-    #print('\n')
     p_print = pprint.PrettyPrinter(width=100, indent=2)
     p_print.pprint(track_response['tracking_results'][0]['trackable_items'])
 
@@ -120,14 +120,16 @@ def show_menu():
                 error_response, track_response = show_tracking(track_num)
             else:
                 print(f'\nNo tracking number present!')
-                track_num = in_track()
+                track_num, error_response = in_track()
                 error_response, track_response = show_tracking(track_num)
 
         elif menu_choice == "3":
             if track_num == '' or track_num is None:
                 print(f'\nNo tracking number present!')
                 track_num, error_response = in_track()
-            elif track_response is not None:
+                error_response, track_response = show_tracking(track_num)
+                show_history(track_response)
+            else:
                 show_history(track_response)
 
         elif menu_choice == "4":
