@@ -35,9 +35,9 @@ def show_tracking(track_num):
 
     #This is a mock server using Postman API testbed, commented out and replaced with a local
     #json-server during testing as there is a limit on how many requests a free account can send
-    #url = 'https://8b7a028c-6934-451c-9619-f683a4367494.mock.pstmn.io/shipping/v1/track?tracking_ids='
+    url = 'https://8b7a028c-6934-451c-9619-f683a4367494.mock.pstmn.io/shipping/v1/track?tracking_ids='
 
-    url = 'http://localhost:3000/test'
+    #url = 'http://localhost:3000/test'
 
     #actual Australia Post API would require headers to be sent as follows:
     #headers = {
@@ -49,7 +49,7 @@ def show_tracking(track_num):
 
     if track_num is not None:
         #actual API would require requests.get(url + track_num, headers)
-        query = requests.get(url)
+        query = requests.get(url + track_num)
 
         #this loop determines if the get request returned a 200 OK code
         if query.status_code == 200:
@@ -87,7 +87,8 @@ def show_menu():
 
     if args.tracknum is not None:
         track_num = (args.tracknum)
-        show_tracking(track_num)
+        error_response, track_response = show_tracking(track_num)
+        print(f'Errors: {error_response}')
         quit()
 
     print(f'\nIn future, you can also run: aptrack -t TRACKINGNUMBERHERE to receive most recent tracking status at command line')
