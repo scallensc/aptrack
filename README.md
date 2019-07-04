@@ -2,8 +2,6 @@
 
 ### Australia Post delivery status
 
-_aptrack TRACKINGNUMBERHERE_
-
 The purpose of this application is for a user to be able to receive information regarding the status of a delivery from Australia Post, from the terminal, instead of having to utilise the Australia Post website to retrieve such information. Using the Python requests library, It will retrieve the information via an HTTP GET request, utilising the Australia Post track/trace API, which will return information in JSON format, which will then be parsed and output to the user in a human readable form. This information will also be stored in a history file.
 
 Being someone that finds themselves refreshing the Australia Post website constantly while waiting for a delivery, I feel that for a developer working in terminal frequently, it would be quite handy to have the ability to quickly get a status update from the command line instead of utilising the web page to retrieve this information.
@@ -27,28 +25,27 @@ The application will be used as a command in terminal, with the option of the pa
 
 - Show menu with following options
   - _Enter new tracking number_
-    - Allow user to enter a new tracking number which will be stored in a variable as active tracking number
+    - Allow user to enter a new tracking number
   - _Show tracking information_
     - Check entered number for validity using Australia Post API
-    - Valid result will return tracking information for active tracking number
+    - Valid result will return most recent tracking event information for active tracking number
     - Invalid result will ask user to enter a valid tracking number
-  - _History_
-    - Store results from tracking number to a file in order to display tracking history for the active tracking number
+  - _Show tracking history_
+    - Display detailed tracking results for given tracking number
   - _Exit_
     - Exit program
 
 #### _Enter new tracking number_ 
 
 - Request tracking number from user
-  - Store in variable as active tracking number
 - Display tracking number at top of menu
 
-#### _Retrieve tracking information_
+#### _Show current status_
 
 - If user passes tracking number as argument to program:
-  - Tracking number stored as variable
+  - Send tracking number to API
   
-  - Variable checked against Australia Post database using API HTTP GET request, following possible responses:
+  - Check against Australia Post database with following possible responses:
   
     |Code|Name|Description|
     |-------|--------|---------------|
@@ -61,11 +58,9 @@ The application will be used as a command in terminal, with the option of the pa
     |502|Bad gateway|The server you contacted was acting as a gateway or proxy and received an invalid response from an upstream server.|
     |503|Service unavailable|The server is unavailable due to maintenance, overload or an error state of some kind.|
     
-  - Use loop to check if variable is returned as invalid, in order to ask user to enter a valid number or exit program
+  - Check if request returned OK
   
-    - test against fail conditions, display relevant error message and break if response other than 200 received
-    
-  - If valid, return most recent tracking update and quit program
+  - If valid, return most recent tracking update
 
 
 
@@ -156,30 +151,29 @@ The application will be used as a command in terminal, with the option of the pa
 
 - Information needs to be presented to user on successful retrieval
   
-  
-  
 - If user has passed tracking number as argument:
   
-  - Dump relevant JSON data into variables in human readable form
-    - Print variables to screen in terminal
-    - quit program
-  - Possibly implement args in program to filter data from JSON to user preference, e.g. default is most recent status only, args could be set to show all tracking events from beginning 
+  - Get most recent tracking event from JSON
+    - Print most recent tracking event to screen in terminal
+    - quit program 
 
-#### _Store information in file_
+#### _Show tracking history_
 
-- Store parsed information in text file
-
-  - Alternatively, store all info before parsing to user for later use as whole data
-
-    
-
-- Append information from each run to form a history of queries and results
-
-  - Possibly implement an option to import file from previous runs to show history in program
-  
-    
+- Parse information from JSON
+- Separate detailed tracking history available in another section of JSON file
+  - Print this more detailed information presentably inside application
 
 ## User Interaction Outline
 
-User will run program as described at the top of this file
+User can run the program, with an optional argument. eg:
+
+- aptrack -t 7XX1000634011427
+
+This will check the entered number and return the most recent tracking event straight to the command line
+
+Alternatively, user can just run the program with no argument, eg:
+
+- aptrack
+
+This will
 

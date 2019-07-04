@@ -1,7 +1,6 @@
 #!/usr/bin/python
 """
 Author: Samuel C Allen
-Contact: samuelcallen@me.com
 Date: 2019/06/29
 Licence: GPLv3
 Version: 0.2
