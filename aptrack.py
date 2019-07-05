@@ -59,11 +59,10 @@ def show_tracking(track_num):
             if track_num in track_response.text:
                 track_response = query.json()
 
-                #this loop will print the most current tracking event from returned request
-                for result in track_response['tracking_results']:
-                    print(f'\n' + result['consignment']['status'])
-                    error_response = None
-                    return error_response, track_response
+                #print the most current tracking event from returned request to menu
+                print(f'\n' + track_response['tracking_results'][0]['consignment']['status'])
+                error_response = None
+                return error_response, track_response
 
         #provide an error response code to show on menu if anything other than 200 OK returned
         error_response = query
