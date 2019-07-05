@@ -12,18 +12,17 @@ import requests
 
 #function for user to input a new tracking number
 #saves time having to relaunch program passing argument if left out
+
 def in_track():
     ''' input tracking number '''
-    track_num = input(f'\nPlease enter your tracking number: ')
-    track_num = track_num.upper()
-    if track_num != '' and track_num is not None:
-        error_response = None
-        return track_num, error_response
-
-    #request user input again if no tracking info entered
-    print(f'\nNo tracking number entered!')
-    track_num = in_track()
-    return track_num
+    while True:
+        track_num = input(f'\nPlease enter your tracking number: ')
+        track_num = track_num.upper()
+        if track_num != '' and track_num is not None:
+            error_response = None
+            return track_num, error_response
+        #request user input again if no tracking info entered
+        print(f'\nNo tracking number entered!')
 
 #function to display tracking information
 def show_tracking(track_num):
@@ -72,10 +71,13 @@ def show_tracking(track_num):
         return error_response, track_response
     return error_response, track_response
 
-def show_history(track_response):
+def show_history(error_response, track_response):
     ''' show tracking history for active tracking number'''
-    p_print = pprint.PrettyPrinter(width=100, indent=2)
-    p_print.pprint(track_response['tracking_results'][0]['trackable_items'])
+    if error_response is None and track_response is not None:
+        p_print = pprint.PrettyPrinter(width=100, indent=2)
+        p_print.pprint(track_response['tracking_results'][0]['trackable_items'])
+    else:
+        return error_response
 
 
 def show_menu():
@@ -128,9 +130,9 @@ def show_menu():
                 print(f'\nNo tracking number present!')
                 track_num, error_response = in_track()
                 error_response, track_response = show_tracking(track_num)
-                show_history(track_response)
+                show_history(error_response, track_response)
             else:
-                show_history(track_response)
+                show_history(error_response, track_response)
 
         elif menu_choice == "4":
             print("\nGoodbye")
@@ -139,4 +141,5 @@ def show_menu():
         else:
             print("\nInvalid choice, please try again!")
 
-show_menu()
+if __name__ == "__main__":
+    show_menu()
