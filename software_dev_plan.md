@@ -194,3 +194,55 @@ This program has been revised extensively to minimise UX frustrations, during de
 ![Control Flow Legend](/docs/samuel-allen-T1A2-13-control-flow-legend.png)
 
 ![Control Flow Diagram](/docs/samuel-allen-T1A2-13-control-flow-diagram.png)
+
+
+
+## Implementation Plan
+
+| Feature                | Component                                                    | Priority                             | Timeframe | Completed |
+| ---------------------- | ------------------------------------------------------------ | ------------------------------------ | --------- | --------- |
+| Create Menu            |                                                              | High                                 | 1hr       | 29/06/19  |
+|                        | Stubbed menu - 1. Enter tracking number                      |                                      | 10-15min  | 29/06/19  |
+|                        | Stubbed menu - 2. Show current status                        |                                      | 10-15min  | 29/06/19  |
+|                        | Stubbed menu - 3. Show tracking history                      |                                      | 10-15min  | 29/06/19  |
+|                        | Stubbed menu - 4. Exit                                       |                                      | 5min      | 29/06/19  |
+|                        |                                                              |                                      |           |           |
+| Refine Menu            |                                                              | Medium - depends on other functions  | 2-3hr     | 01/07/19  |
+|                        | Argparse section to skip to set track_num variable and run show_tracking function if passed on run |                                      | 30min     | 29/06/19  |
+|                        | Create track_num variable to show active tracking number     |                                      | 10-15min  | 29/06/19  |
+|                        | Create error_response variable to show any current errors    |                                      | 10-15min  | 29/06/19  |
+|                        | Create track_response variable to store and pass data between functions |                                      | 10-15min  | 29/06/19  |
+|                        | Make option 1 call a function to input tracking number instead of a stub |                                      | 10-15min  | 29/06/19  |
+|                        | Make option 2 call a function to show recent tracking event instead of astub, check if there is a tracking number present for the function to work, and if not, get user to input tracking number and run function |                                      | 10-15min  | 29/06/19  |
+|                        | Make option 3 call a function to show tracking history instead of a stub, check for the presence of a tracking number, and the information from option 2 that is also required to run the function, if neither or partial, run those functions as required to get info before running function |                                      | 10-15min  | 29/06/19  |
+|                        | Make option 4 quit the program instead of a stub             |                                      | 5min      | 29/06/19  |
+|                        |                                                              |                                      |           |           |
+| JSON-server            | Make JSON-server to host example GET responses as Australia Post will not give me an API key. | Low                                  | 1hr       | 29/06/19  |
+|                        |                                                              |                                      |           |           |
+| track_num function     |                                                              | High, needed to fully implement menu | 1-2hr     | 01/07/19  |
+|                        | Request user input                                           |                                      |           | 29/06/19  |
+|                        | Check input has been given (later changed to while loop 05/07/19) |                                      |           | 05/07/19  |
+|                        | Change input to upper case                                   |                                      |           | 01/07/19  |
+|                        | Reset error_response                                         |                                      |           | 01/07/19  |
+|                        | Return error_response and track_response values to calling function |                                      |           | 01/07/19  |
+|                        |                                                              |                                      |           |           |
+| show_tracking function |                                                              | High, needed to fully implement menu | 4-5hr     |           |
+|                        | Set URL for GET request                                      |                                      | 30min     | 01/07/19  |
+|                        | Set required headers for GET request                         |                                      | 30min     | 01/07/19  |
+|                        | Send GET request + track_num                                 |                                      | 30min     | 01/07/19  |
+|                        | Check if return code is 200 OK                               |                                      | 15min     | 01/07/19  |
+|                        | Search return text for tracking number                       |                                      | 30min     | 01/07/19  |
+|                        | Parse JSON data to print the most recent tracking event to screen |                                      | 60min     | 01/07/19  |
+|                        | Store JSON data in variable to return value for use in other function |                                      | 30min     | 01/07/19  |
+|                        | Reset error_response                                         |                                      | 10min     | 01/07/19  |
+|                        | Return error_response and track_response values to calling function |                                      | 30min     | 01/07/19  |
+|                        |                                                              |                                      |           |           |
+|                        | If tracking number is invalid, set error_response to display the error code received from the GET request and pass value to menu for display as current error |                                      | 10min     | 01/07/19  |
+|                        |                                                              |                                      |           |           |
+| show_history function  |                                                              | High, needed to fully implement menu | 1-2hr     | 03/07/19  |
+|                        | Check that error_response is None and that track_response is not None |                                      | 10-15min  | 03/07/19  |
+|                        | Use pprint to print the detailed tracking history of track_response |                                      | 1hr       | 03/07/19  |
+|                        |                                                              |                                      |           |           |
+|                        | Otherwise, return the passed error_response value to menu for display as current error |                                      | 10-15min  | 03/07/19  |
+
+

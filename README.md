@@ -1,6 +1,6 @@
 ## aptrack
 
-Compiled application located in bin folder
+Compiled application located in dist folder
 
 **_usage:_** App can be run with or without an argument provided, as follows
 

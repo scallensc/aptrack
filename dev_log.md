@@ -40,7 +40,7 @@ More code for argparse section in order to have the program run correctly when a
 
 Morning:
 
-Implemented code to search the response for the tracking number entered in order to display results for that tracking number, as some of the Australia Post example responses contain partial or invalid tracking numbers because you can send multiple numbers to the API separated by commas. 
+Implemented code to search the response for the tracking number entered in order to display results for that tracking number, as some of the Australia Post example responses contain partial or invalid tracking numbers because you can send multiple numbers to the API separated by commas.
 
 Implemented code correctly to show the active tracking number that has been input in the menu, as well as any current error responses from the server.
 
@@ -68,3 +68,11 @@ Australia Post never replied with API key, so I have left code in that would ret
 
 ![Trello](/docs/samuel-allen-T1A2-13-project-management-2.png)
 
+Afternoon:
+
+Updates to documentation, have also gone through code and removed recursion, replaced with While loop instead.
+
+Created bash script to automate creation of executable
+Ran bash script
+
+![Trello](/docs/samuel-allen-T1A2-13-project-management-3.png)
