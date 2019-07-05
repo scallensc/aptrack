@@ -79,7 +79,6 @@ def show_history(error_response, track_response):
     else:
         return error_response
 
-
 def show_menu():
     ''' show menu '''
     parser = argparse.ArgumentParser()

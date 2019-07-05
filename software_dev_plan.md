@@ -38,7 +38,11 @@ The application will be used as a command in terminal, with the option of the pa
 #### _Enter new tracking number_ 
 
 - Request tracking number from user
-- Display tracking number at top of menu
+  - Check that tracking number has actually been entered
+    - If no input has been given, continue to request until entered
+  - Convert input into upper case to match expected format in Australia Post database
+- Pass information back to menu
+  - This function needs to pass the tracking number back to the menu function so that the user can see the active tracking number at the top of the menu
 
 #### _Show current status_
 
@@ -167,31 +171,21 @@ The application will be used as a command in terminal, with the option of the pa
 
 ## User Interaction Outline
 
-User can get help for program by running
-
-- aptrack -h
-
-User can run the program, with an optional argument. eg:
-
-- aptrack -t 7XX1000634011427
-
-This will check the entered number and return the most recent tracking event straight to the command line.
-
-Alternatively, user can just run the program with no argument, eg:
-
-- aptrack
-
-This will present the user with a menu, telling them that for future use, the option to pass argument with tracking number is available, otherwise presenting 4 options and asking the user to choose 1-4
+This program has been revised extensively to minimise UX frustrations, during development a number of areas were identified when running the program without an argument that needed improvement, and were iterated on until these frustrations had been removed.
 
 1. Enter tracking number
    - Please enter your tracking number: 
 
 2. Show current status
    - Prints most recent tracking event
-
+- This option originally had a prompt for the user to enter a tracking number, had they not already done so before selecting it, but the user would then need to select option 2 again from the menu to execute the function.
+   - Identifying this as a frustrating UX element, now, instead, they will be prompted to enter a number, after which point, the code for this function will execute automatically, the same as if they had entered a tracking number before selecting it.
+   
 3. Show detailed history
    - Prints full tracking history
-
+- Like option 2, this option had the same issues regarding the input of a tracking number, but were more frustrating because option 3 required information derived from having run option 2 beforehand as well, thusly the user would have had to select 2, then 3, after having input the number.
+   - Again, this was identified as a frustrating UX element, and has been revised to execute the code required to run the function correctly immediately after user enters tracking number.
+   
 4. Exit
    - Quits program, says Goodbye
 
