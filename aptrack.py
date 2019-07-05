@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 """
 Author: Samuel C Allen
 Contact: samuelcallen@me.com
@@ -81,8 +81,7 @@ def show_history(error_response, track_response):
 def show_menu():
     ''' show menu '''
     parser = argparse.ArgumentParser()
-    parser.add_argument(
-        '-t', '--tracknum', help='run: "aptrack TRACKINGNUMBERHERE to receive most recent tracking info at command line"')
+    parser.add_argument('-t', '--tracknum', help='run: "aptrack TRACKINGNUMBERHERE to receive most recent tracking info at command line"')
     args = parser.parse_args()
 
     if args.tracknum is not None:
