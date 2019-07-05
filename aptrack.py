@@ -6,6 +6,7 @@ Date: 2019/06/29
 Licence: GPLv3
 Version: 0.2
 """
+import sys
 import argparse
 import pprint
 import requests
@@ -48,7 +49,13 @@ def show_tracking(track_num):
 
     if track_num is not None:
         #actual API would require requests.get(url + track_num, headers)
-        query = requests.get(url + track_num)
+        #found a bug if user ran offline, added try/except for this condition
+        try:
+            query = requests.get(url + track_num)
+        except requests.ConnectionError:
+            error_response = 'No internet connection!'
+            track_response = None
+            return error_response, track_response
 
         #this loop determines if the get request returned a 200 OK code
         if query.status_code == 200:
@@ -88,7 +95,7 @@ def show_menu():
         track_num = (args.tracknum)
         error_response, track_response = show_tracking(track_num)
         print(f'Errors: {error_response}')
-        quit()
+        sys.exit()
 
     print(f'\nIn future, you can also run: aptrack -t TRACKINGNUMBERHERE to receive most recent tracking status at command line')
 

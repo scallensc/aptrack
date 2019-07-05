@@ -68,11 +68,23 @@ Australia Post never replied with API key, so I have left code in that would ret
 
 ![Trello](/docs/samuel-allen-T1A2-13-project-management-2.png)
 
-Afternoon:
+### 05/07/19
+
+Morning:
 
 Updates to documentation, have also gone through code and removed recursion, replaced with While loop instead.
+
+Afternoon:
 
 Created bash script to automate creation of executable
 Ran bash script
 
 ![Trello](/docs/samuel-allen-T1A2-13-project-management-3.png)
+
+### 06/07/19
+
+Morning:
+
+Identified 2 bugs with program, compiled application would throw an error module quit() not defined, determined that I needed to import sys library and use sys.exit() instead
+Also found an issue where the program would crash if run without an internet connection due to exception with requests.get, created a try/except to handle this error and return
+error_response as 'No internet connection!'
