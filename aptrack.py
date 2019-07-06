@@ -135,6 +135,9 @@ def show_menu():
                 track_num, error_response = in_track()
                 error_response, track_response = show_tracking(track_num)
                 show_history(error_response, track_response)
+            elif track_num is not '' or track_num is not None and track_response is None:
+                error_response, track_response = show_tracking(track_num)
+                show_history(error_response, track_response)
             else:
                 show_history(error_response, track_response)
 
