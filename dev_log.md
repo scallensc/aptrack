@@ -88,3 +88,5 @@ Morning:
 Identified 2 bugs with program, compiled application would throw an error module quit() not defined, determined that I needed to import sys library and use sys.exit() instead
 Also found an issue where the program would crash if run without an internet connection due to exception with requests.get, created a try/except to handle this error and return
 error_response as 'No internet connection!'
+
+Also updated install.sh script to prompt user to say yes/no to installing compiled program to /usr/bin

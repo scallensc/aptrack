@@ -5,7 +5,7 @@ Compiled application located in dist folder
 **_usage:_** App can be run with or without an argument provided, as follows
 
 ```
-aptrack -t 7XX1000634011427
+./aptrack -t 7XX1000634011427
 ```
 
 Will check the tracking number, then return the most recent tracking event recorded against it, printing both to the command line and then exiting.
@@ -13,7 +13,7 @@ Will check the tracking number, then return the most recent tracking event recor
 Valid tracking numbers for the hosted examples are 7XX1000634011427 and 6XXX12345678
 
 ```
-aptrack
+./aptrack
 ```
 
 Running the application with no argument provided will offer you a menu with 4 choices
