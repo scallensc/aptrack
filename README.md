@@ -2,6 +2,11 @@
 
 Compiled application located in dist folder
 
+```
+./install.sh
+```
+If pyinstaller package is installed, can compile from source, you will be offered the choice to copy the compiled app to /usr/bin
+
 **_usage:_** App can be run with or without an argument provided, as follows
 
 ```
