@@ -5,7 +5,8 @@ Compiled application located in dist folder
 ```
 ./install.sh
 ```
-If pyinstaller package is installed, can compile from source, you will be offered the choice to copy the compiled app to /usr/bin
+Running this script will pip install pyinstaller in order to compile application.
+You will also be offered the choice to copy the compiled app to /usr/bin in order to run from anywhere
 
 **_usage:_** App can be run with or without an argument provided, as follows
 
