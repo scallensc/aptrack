@@ -1,3 +1,4 @@
+pip3 install pyinstaller --user
 pyinstaller aptrack.py --clean -F
 rm -rf build
 
